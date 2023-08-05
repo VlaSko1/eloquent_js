@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<script type="text/javascript" charset="utf-8">
+  class Vec {
+    constructor(x, y) {
+      this.x = x,
+      this.y = y
+    }
+    plus(vecPlus) {
+      return new Vec((this.x + vecPlus.x), 
+      (this.y + vecPlus.y));
+    }
+    minus(vecMinus) {
+      return new Vec((this.x - vecMinus.x),
+      (this.y - vecMinus.y));
+    }
+    
+    get length() {
+      return Math.sqrt(Math.abs(this.x) ** 2
+      + Math.abs(this.y) ** 2);
+    }
+  }
+  
+  vec1 = new Vec(3, 5);
+  vec2 = new Vec(7, 15);
+  vec3 = vec1.plus(vec2);
+  vec4 = vec1.minus(vec2);
+  console.log(vec4);
+  console.log(vec4.length);
+  
+  
+</script>

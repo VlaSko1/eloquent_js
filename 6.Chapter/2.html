@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title></title>
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      
+      class Group {
+        constructor() {
+          this._group = [];
+        }
+        add(val) {
+          if (this._group.indexOf(val) === -1) {
+            this._group.push(val);
+          }
+        }
+        del(val) {
+          const valInd = this._group.indexOf(val);
+          if  (valInd !== -1) {
+            _group.splice(valInd, 1);
+          }
+        }
+        
+        has(val) {
+          if (this._indexOf(val) !== -1) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        
+      }
+      let a = "b";
+      let b = "a";
+      
+    </script>
+  </body>
+</html>

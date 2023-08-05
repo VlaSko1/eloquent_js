@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class PGroup {
+            constructor(members) {
+                this.members = members;
+            }
+            
+            add(elem) {
+                if (this.has(elem)) return this;
+                return new PGroup(this.members.concat([elem]));
+                
+            }
+            has(elem) {
+                return this.members.includes(elem);
+            }
+            delete(elem) {
+                if (!this.has(elem)) {
+                    return this;
+                } else {
+                    return new PGroup(this.members.filter(el => el !== elem));
+                }
+            }
+        }
+
+        PGroup.empty = new PGroup([]);
+
+        let a = PGroup.empty.add("a");
+        let ab = a.add('b');
+        let b = ab.delete("a");
+        
+
+               
+
+
+        console.log(a);
+        console.log(ab);
+        console.log(b);
+        
+        
+
+        //console.log(a.empty, b.empty, d.empty, z.empty);
+
+
+        
+    </script>
+</body>
+
+</html>

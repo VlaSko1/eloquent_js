@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<meta charset="utr-8">
+<script type="text/javascript" charset="utf-8">
+  function loop(i, ifFunk, nextFunk, bodyFunk) {
+    while (ifFunk(i)) {
+      bodyFunk(i);
+      i = nextFunk(i);
+    }
+  }
+  
+  
+  loop(0, (a) => a <= 5, (a) => ++a, (a) => {
+    console.log(a);
+  });
+</script>

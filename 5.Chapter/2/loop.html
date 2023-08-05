@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+
+function loop(value, condition, step, func){
+	while(condition(value)){
+		func(value);
+		value = step(value);
+	}
+}
+
+loop(5, n => n <= 10, n => ++n, console.log)
+
+
+</script>
+    

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<meta charset="utf-f">
+<script>
+
+	let desk ='';
+	let param = '';
+	let paramX = setParam('X');
+	let paramY = setParam('Y');
+	for(let i = 0; i < paramY; i++){
+		if(i%2 === 0) {
+			param = ' ';
+		} else {
+			param = '#';
+		}
+		for(let j = 0; j < paramX; j++){
+			desk += param;
+			switch(param){
+				case ' ' :
+					param = '#';
+					break;
+				case '#' :
+					param = ' ';
+					break;
+			}
+			
+		}
+		desk += '\n';
+		
+	}
+	console.log(desk);
+	
+	function setParam(type) {
+		while(true){
+			let perem = +prompt(`Введите размер доски по оси ${type}!`, 'Целое число от 2 до 100');
+			if(!Number.isNaN(perem) && perem >= 2 && perem <= 100 && Number.isInteger(perem)){
+				return perem;
+			}
+		
+		}
+	}
+	
+</script> 

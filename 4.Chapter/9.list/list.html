@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+
+const array = [1, 2, 3, 4, 7];
+let list1 = arrayToList(array);
+console.log(list1);
+let list2 = prepend(12, list1);
+let array1 = listToArray(list1);
+let array2 = listToArray(list2)
+console.log(array1, array2);
+console.log(nth(list1, 3));
+console.log(nthRec(list2, 5));
+
+function arrayToList(arr){
+	let list = null;
+	for(let i = arr.length - 1; i >= 0; i--) {
+		list = {
+			value: arr[i],
+			rest: list
+		}
+	}
+	return list;
+}
+function listToArray(objList){
+	let arr = [];
+	while(objList){
+		arr.push(objList.value);
+		objList = objList.rest;
+		
+	}
+	return arr;
+}
+
+function  prepend(el, list){
+	return list = {
+		value: el,
+		rest: list
+	}
+}
+
+function nth(listIn, ind){
+	for(let i = 0; i < ind; i++){
+		if(listIn.rest === null && i < ind){
+			return undefined
+		}
+		listIn = listIn.rest;
+		
+	}
+	return listIn.value;
+}
+function nthRec(listIn, ind){
+	if(ind === 0) return listIn.value;
+	if(listIn.rest === null && ind > 0) return undefined;
+	return nthRec(listIn.rest, ind-1)
+}
+</script>

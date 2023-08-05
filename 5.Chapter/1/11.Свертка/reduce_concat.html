@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+  function reduceConcat(arr) {
+    return arr.reduce((a, b) => a.concat(b));
+  }
+  
+  let arrPrim = [
+    [1, 2, 3],
+    [1, 2, 3],
+    [1, 2]
+  ];
+  
+  console.log(reduceConcat(arrPrim));
+  console.log(arrPrim);
+  
+</script>

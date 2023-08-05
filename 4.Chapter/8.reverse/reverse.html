@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+
+	let aray = [1, 2, 3, 4, 5, 6];
+	console.log(reverseArray(aray));
+	console.log(aray);
+	reverseArrayInPlace(aray);
+	console.log(aray);
+		
+	
+
+
+	function reverseArray(arr){
+		arrReverse = [];
+		for(let el of arr){
+			arrReverse.unshift(el);
+		}
+		return arrReverse;
+	}
+	
+	function reverseArrayInPlace(arr){
+		for(let i = 0; i < arr.length; i++){
+			arr.splice(i, 0, arr.pop());
+		}
+	}
+
+
+</script>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+       // мой правильный ответ
+       // let number = /^((([\+-]?\d*[\.]?\d+)|([\+-]?\d+[\.]?\d*))(e{1}[\+-]?\d+)?)$/i; - мой прав
+
+       // Правильный ответ из книги. Как видим или (|) действует до открывающихся скобок или до начала (конца) регулярного выражения.
+        let number = /^[+\-]?(\d+(\.\d*)?|\.\d+)([eE][+\-]?\d+)?$/;
+
+        // Tests:
+        for (let str of ["1", "-1", "+15", "1.55", ".5", "5.", "1.3e2", "1E-4", "1e+12"]) {
+            if (!number.test(str)) {
+                console.log(`Failed to match '${str}'`);
+            }
+        }
+        for (let str of ["1a", "+-1", "1.2.3", "1+1", "1e4.5", ".5.", "1f5", ".", "12.5e"]) {
+            if (number.test(str)) {
+                console.log(`Incorrectly accepted '${str}'`);
+            }
+        }
+        // Тестируем регулярное выражение своими примерами и получаем что все хорошо.
+        console.log(number.test('-.45e-50'));
+    </script>
+</body>
+</html>

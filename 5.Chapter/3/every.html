@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+ function everyWithFor(arr, fn){
+ 	for(let i = 0; i < arr.length; i++){
+ 		if(!fn(arr[i])) return false;
+ 	}
+ 	return true;
+ }
+ 
+ console.log(everyWithFor([1, 3, 5, 9], n => n < 10));
+ 
+ function everyWithSome(arr, fn){
+ 	let num = true;
+ 	arr.some(el => {
+ 		if(!fn(el)){
+ 			num = false;
+ 		}
+ 	})
+ 	return num;
+ }
+
+console.log(everyWithSome([9, 3, -5, 8], n => n < 10));
+
+
+</script>

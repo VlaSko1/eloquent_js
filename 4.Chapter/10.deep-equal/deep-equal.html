@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+
+let a = {
+	ret: 23,
+	cat: "black",
+	ked: {
+		ter: 45
+	}
+};
+let b = {
+	ret: 23,
+	cat: 'black',
+	ked: {
+		ter: 45
+	}
+};
+
+console.log(deepEqual(a, b));
+
+function deepEqual(obj1, obj2){
+	let count = 0;
+	if(obj1 === obj2){
+		return true;
+	}
+	let objKeys1 = Object.keys(obj1);
+	let objKeys2 = Object.keys(obj2);
+	if(objKeys1.length !== objKeys2.length) {
+		return false;
+	}
+	for(let i = 0; i < objKeys1.length; i++){
+		for(let j = 0; j < objKeys2.length; j++){
+			if(objKeys1[i] === objKeys2[j]) {
+				if(obj1[objKeys1[i]] === obj2[objKeys2[j]]){
+					count++;
+					break;
+				}
+				else if(obj1[objKeys1[i]] === null && obj2[objKeys2[j]] === null){
+					count++;
+					break;
+				}
+				else if(obj1[objKeys1[i]] === null) return false;
+				else if(obj2[objKeys2[j]] === null) return false;
+				else if(typeof obj1[objKeys1[i]] === 'object' && typeof obj2[objKeys2[j]] === 'object') {
+					if(deepEqual(obj1[objKeys1[i]], obj2[objKeys2[j]])){
+						count++;
+						break;
+					}
+				}
+			}
+		}
+	}
+	if(objKeys1.length === count){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+</script>
+    
