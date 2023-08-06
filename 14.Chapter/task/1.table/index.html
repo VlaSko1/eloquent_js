@@ -20,7 +20,7 @@
     let fields = Object.keys(data[0]);
     tableInElem.appendChild(createRowForData(fields, true));
 
-    for (let i = 0; i < MOUNTAINS.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       tableInElem.appendChild(createRowForData(Object.values(data[i])));
     }
 
