@@ -15,22 +15,34 @@
     {name: "Mont Blanc", height: 4808, place: "Italy/France"}
   ];
 
-  let elemOne = document.getElementById('mountains');
-  function placeTableWithData (elem, data) {
+  function getTableWithData (data) {
     let tableInElem = document.createElement('table');
-    tableInElem.appendChild(createRowForData({name: "Name", height: "Height", place: "Place"}));
+    let fields = Object.keys(data[0]);
+    tableInElem.appendChild(createRowForData(fields, true));
 
+    for (let i = 0; i < MOUNTAINS.length; i++) {
+      tableInElem.appendChild(createRowForData(Object.values(data[i])));
+    }
+
+    return tableInElem;
   }
 
-  function createRowForData(data, th = false) {
+  function createRowForData(arData, th = false) {
     let row = document.createElement('tr'); 
-    
-    let name = document.createElement(th ? 'th': 'td')
-    row.appendChild(document.createElement(th ? 'th': 'td'));
-    row.appendChild(document.createElement(th ? 'th': 'td'));
-    row.appendChild(document.createElement(th ? 'th': 'td'));
+
+    for (let i = 0; i < arData.length; i++) {
+      let cell = document.createElement(th ? 'th': 'td');
+      let nodeText = document.createTextNode(arData[i]);
+      if (typeof arData[i] === 'number') {
+        cell.style.textAlign = 'right';
+      }
+      cell.appendChild(nodeText);
+      row.appendChild(cell);
+    }
+
+    return row;
   }
 
-  placeTableWithData(elemOne, MOUNTAINS);
+  document.getElementById('mountains').appendChild(getTableWithData(MOUNTAINS));
   // Your code here
 </script>
