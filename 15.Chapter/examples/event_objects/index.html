@@ -1,0 +1,13 @@
+<button>Щёлкните любой кнопкой мыши</button>
+<script> 
+    let button = document.querySelector("button");
+    button.addEventListener("mousedown", event => {
+        if (event.button == 0) {
+            console.log("Левая кнопка");
+        } else if (event.button == 1) {
+            console.log("Средняя кнопка");
+        } else if (event.button == 2) {
+            console.log("Правая кнопка");
+        }
+    })
+</script>
