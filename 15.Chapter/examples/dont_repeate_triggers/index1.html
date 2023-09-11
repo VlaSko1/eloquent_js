@@ -1,0 +1,10 @@
+<textarea>Введите сдесь какой-нибудь текст...</textarea>
+
+<script>
+    let textarea = document.querySelector("textarea");
+    let timeout;
+    textarea.addEventListener("input", () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => console.log("Текст введён!"), 500);
+    });
+</script>
