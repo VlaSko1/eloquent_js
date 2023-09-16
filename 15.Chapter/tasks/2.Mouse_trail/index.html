@@ -1,0 +1,35 @@
+<!doctype html>
+
+<style>
+  .trail { /* className for the trail elements */
+    position: absolute;
+    height: 6px; width: 6px;
+    border-radius: 3px;
+    background: teal;
+  }
+  body {
+    height: 300px;
+  }
+</style>
+
+<script>
+
+    document.addEventListener('mousemove', trail);
+
+    function trail(event) {
+        let elem = document.createElement('div');
+        elem.className = 'trail';
+
+        elem.style.left = event.clientX - 3 + 'px';
+        elem.style.top = event.clientY - 3 + 'px';
+        document.body.appendChild(elem);
+        
+        deleteElem(elem);
+    }
+    function deleteElem(elem) {
+        
+            setTimeout(() => {
+                elem.remove();
+            }, 150);
+    }
+</script>
