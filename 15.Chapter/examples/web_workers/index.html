@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<script>
+    var squareWorker = new Worker("squareworker.js");
+
+    squareWorker.onmessage = event => {
+        console.log("Ответ от веб-обработчика: ", event.data);
+    }
+    /*squareWorker.addEventListener("message", event => {
+        console.log("Ответ от веб-обработчика: ", event.data);
+    });*/
+    squareWorker.postMessage(10);
+    squareWorker.postMessage(24);
+
+   
+</script>

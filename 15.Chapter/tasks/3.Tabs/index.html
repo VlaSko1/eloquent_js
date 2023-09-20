@@ -1,0 +1,44 @@
+<!doctype html>
+
+<tab-panel>
+  <div data-tabname="one">Tab one</div>
+  <div data-tabname="two">Tab two</div>
+  <div data-tabname="three">Tab three</div>
+</tab-panel>
+<script>
+  function asTabs(node) {
+    let nodeListDiv = node.querySelectorAll('div');
+    let arrButton = [];
+    nodeListDiv.forEach(elem => {
+      let textElem = elem.dataset.tabname;
+      if (textElem !== 'one') {
+        elem.style.display = 'none';
+      }
+      let button = document.createElement('button');
+      button.textContent = textElem;
+      button.addEventListener('click', () => {
+        elem.style.display = 'block'; 
+        nodeListDiv.forEach(item => {
+          if (textElem !== item.dataset.tabname) {
+            item.style.display = 'none';
+          }
+        });
+      }); 
+      arrButton.push(button);
+    });
+    node.addEventListener('click', (event) => {
+      if (event.target.localName === 'button') {
+        event.target.style.color = 'red';
+        arrButton.forEach(elem => {
+          if (event.target.textContent !== elem.textContent) {
+            elem.style.color = 'black';
+          }
+        });
+      }
+    })
+    for (let i = arrButton.length - 1; i >= 0; i--) {
+      node.prepend(arrButton[i]);
+    }
+  }
+  asTabs(document.querySelector("tab-panel"));
+</script>
