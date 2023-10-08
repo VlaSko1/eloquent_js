@@ -350,10 +350,21 @@ let simpleLevelPlan = `
 	}
 
 	async function runGame(plans, Display) {
+		let lives = 3;
 		for (let level = 0; level < plans.length;) {
-			let status = await runLevel(new Level(plans[level]), // посмотри 1) функцию runLevel, 2) Level класс, 3)DomDisplay
+			console.log(`Level: ${level + 1 }. Life: ${lives}`);
+			let status = await runLevel(new Level(plans[level]),
 										Display);
-			if (status == "won") level++;
+			if (status == "won") {
+				level++;
+			} else if (status == 'lost') {
+				lives--;
+				if (lives < 1) {
+					level = 0;
+					lives = 3;
+					console.log("Game over!");
+				}
+			}
 		}
 		console.log("You've won!");
 	}
