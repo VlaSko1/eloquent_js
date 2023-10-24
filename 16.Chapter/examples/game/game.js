@@ -331,22 +331,47 @@ let simpleLevelPlan = `
 		let display = new Display(document.body, level);
 		let state = State.start(level);
 		let ending = 1;
-        return new Promise(resolve => {
-            runAnimation(time => {
-                state = state.update(time, arrowKeys);
-                display.syncState(state);
-                if (state.status == "playing") {
-                    return true;
-                } else if (ending > 0) {
-                    ending -= time;
-                    return true;
-                } else {
-                    display.clear();
-                    resolve(state.status);
-                    return false;
-                }
-            });
-        });
+		let running = "yes";
+
+		return new Promise(resolve => {
+			function escHandler(event) {
+			  	if (event.key != "Escape") return;
+			  		event.preventDefault();
+			  	if (running == "no") {
+					running = "yes";
+					runAnimation(frame);
+			  	} else if (running == "yes") {
+					running = "pausing";
+			  	} else {
+					running = "yes";
+			  	}
+			}
+			window.addEventListener("keydown", escHandler);
+			let arrowKeys = trackKeys(["ArrowLeft", "ArrowRight", "ArrowUp"]);
+	  
+			function frame(time) {
+				if (running == "pausing") {
+						running = "no";
+						return false;
+				}
+	  
+				state = state.update(time, arrowKeys);
+				display.syncState(state);
+				if (state.status == "playing") {
+					return true;
+				} else if (ending > 0) {
+					ending -= time;
+					return true;
+				} else {
+					display.clear();
+					window.removeEventListener("keydown", escHandler);
+					//arrowKeys.unregister(); не переходит на другой уровень
+					resolve(state.status);
+					return false;
+				}
+			}
+			runAnimation(frame);
+		});
 	}
 
 	async function runGame(plans, Display) {
