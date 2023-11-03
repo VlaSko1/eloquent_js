@@ -30,6 +30,10 @@
     box-shadow: -4px -7px 8px white, 4px -7px 8px white;
 }
 
+.monster {
+    background: rgb(0, 150, 0);
+}
+
 .game {
     overflow: hidden;
     max-width: 600px;
