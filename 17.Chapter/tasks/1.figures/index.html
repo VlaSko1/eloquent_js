@@ -1,0 +1,72 @@
+<canvas ></canvas>
+<script>
+
+    /**
+     * Рисует равнобедренную трапецию
+     * @param {number} x координата левого нижнего края трапеции по оси "X"
+     * @param {number} y координата левого нижнего края трапеции по оси "Y"
+     * @param {number} angle угол основания (нижнего) трапеции в градусах (целое число) 
+     * @param {number} height высота трапеции (целое число)
+     * @param {number} base длина большего основания трапеции 
+     * @return {undefined} ничего не возвращает, т. к. рисует трапецию заданных параметров на холсте
+     */
+    function trapezoid(x, y, angle, height, base) {
+
+        let cx = document.querySelector("canvas").getContext("2d");
+
+        // Проверка заданных параметров
+        if (y <= height) {
+            alert("Неверно заданы параметры трапеции, коородината Y нижнего левого края трапеции " + 
+                    "не должна быть меньше или равна высоте трапеции"
+            );
+            return;
+        }
+        if (angle <= 0 || angle >= 90) {
+            alert("Угол основания трапеции должен быть больше 0 но меньше 90 градусов.");
+            return;
+        }
+        if (!checkAngleHeight(angle, height, base)) {
+            alert("Заданы неверные параметры высоты трапеции, угла и длины нижнего основания трапеции");
+            return;
+        }
+
+        // Расчет точек для рисования трапеции
+        let y2 = y - height; 
+        // расчитываем по теореме синусов
+        let x2 = Math.sin((180 - angle - 90) * Math.PI / 180) * height / Math.sin(angle * Math.PI / 180);
+        x2 = Math.round(x2) + x;
+
+        let y3 = y2;
+        let x3 = x + base - (x2 - x);
+        let y4 = y;
+        let x4 = x + base;
+
+        cx.beginPath();
+        cx.moveTo(x, y);
+        cx.lineTo(x2, y2);
+        cx.lineTo(x3, y3);
+        cx.lineTo(x4, y4);
+        cx.lineTo(x, y);
+        cx.stroke();
+    }
+
+    // Дополнительные функции
+
+    /**
+     * Проверяет правильно ли заданы для трапеции следующие данные: угол нижнего основания трапеции, длинна 
+     * большего основания трапеции и высота трапеции
+     * @param {number} угол основания (нижнего) трапеции в градусах (целое число) 
+     * @param {number} height высота трапеции (целое число)
+     * @param {number} base длина большего основания трапеции
+     * @return {boolean} возвращает false, если данные трапеции заданы неправильно, в противном случае - true
+     */
+    function checkAngleHeight(angle, height, base) {
+        let lowCath = Math.sin((180 - angle - 90) * Math.PI / 180) * height / Math.sin(angle * Math.PI / 180);
+        if (base <= 2 * lowCath) {
+            return false;
+        }
+        return true;
+    }
+
+    trapezoid(20, 150, 50, 120, 250);
+</script>
