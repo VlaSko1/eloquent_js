@@ -1,4 +1,4 @@
-<canvas ></canvas>
+<canvas width="300" height="400" ></canvas>
 <script>
 
     /**
@@ -51,6 +51,79 @@
         cx.stroke();
     }
 
+    /**
+     * Рисует квадрат (ромб) красного цвета повернутый на 45 градусов со смещением оси координат на x и y 
+     * соответственно по оси абсцисс и ординат (x и y)
+     * @param {number} x - целое число, величина смещения оси x относительно первоначального значения
+     * @param {number} y - целое число, величина смещения оси y относительно первоначального значения
+     * @return {undefined} - ничего не возвращает 
+     */
+    function diamond(x, y) {
+        let cx = document.querySelector("canvas").getContext("2d");
+        cx.translate(x, y);
+        cx.rotate(Math.PI / 4);
+        cx.fillStyle = "red";
+        cx.fillRect(0, 0, 60, 60);
+        cx.resetTransform(); // отменяет смещение
+    }
+
+    /**
+     * Рисует на хослте зигзагообразную фигуру 
+     * @param {number} x - координата x начала фигуры
+     * @param {number} y - координата y начала фигуры
+     * @param {number} length - длина отрезка зигзага
+     * @param {number} angle - целое число, угол между отрезками зигзага
+     * @param {number} count - число отрезков зигзага
+     * @return {undefined} - ничего не возвращает 
+     */
+    function zigzag(x, y, length, angle, count) {
+        // Проверки значений
+        if (!Number.isInteger(x) || x < 0) {
+            alert("Координата х должна быть целым числом и должна быть большей или равной нулю!");
+            return;
+        }
+        if (!Number.isInteger(y) || y < 0) {
+            alert("Координата y должна быть целым числом и должна быть большей или равной нулю!");
+            return;
+        }
+        if (!Number.isInteger(length) || length < 5) {
+            alert("Длина отрезка зигзага должна быть целым числом и должна быть больше 5!");
+            return;
+        }
+        if (!Number.isInteger(angle) || angle <= 1 || angle >= 90) {
+            alert("Угол между отрезками зигзага должен быть целым числом и должен быть больше 1 и меньше 90 градусов!");
+            return;
+        }
+        if (!Number.isInteger(count) || count < 1) {
+            alert("Количество отрезков зигзага должно быть целым числом и должно быть не меньше одного!");
+            return;
+        }
+
+        // Предварительные расчёты
+        // По теореме синусов расчитываем величину на которую каждый раз смещается координата y при построении 
+        // следующего отрезка зигзага
+        let offsetY = Math.round(length * Math.sin(0.5 * angle * Math.PI / 180) / Math.sin(Math.PI / 2)); 
+        let offsetX = Math.round(length * Math.sin((90 - angle / 2) * Math.PI / 180) / Math.sin(Math.PI / 2)); 
+
+        // Построение фигуры
+        let cx = document.querySelector("canvas").getContext("2d");
+
+        cx.beginPath();
+        cx.moveTo(x, y);
+        for (let i = 1; i <= count; i++) {
+            y += offsetY;
+            if (i % 2) {
+                x += offsetX;
+            } else {
+                x -= offsetX;                
+            }
+            cx.lineTo(x, y);
+        }
+        cx.stroke();
+    }
+
+    
+
     // Дополнительные функции
 
     /**
@@ -69,5 +142,8 @@
         return true;
     }
 
+    // Выполнение функций
     trapezoid(20, 150, 50, 120, 250);
+    diamond(45, 55);
+    zigzag(5, 5, 230, 15, 10);
 </script>
