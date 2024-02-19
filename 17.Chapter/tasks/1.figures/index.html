@@ -122,8 +122,42 @@
         cx.stroke();
     }
 
-    
+    /**
+     * Строит спираль закручивающуюся по часовой стрелке (код взят из решения задачи в книге)
+     * @param {number} x - координата начала фигуры по оси X
+     * @param {number} y - координата начала фигуры по оси Y
+     * @return {undefined} ничего не возвращает
+     */ 
+    function spiral(x, y) {
+        let cx = document.querySelector("canvas").getContext("2d");
+        let radius = 50, xCenter = x + radius, yCenter = y + radius;
+        cx.beginPath();
+        cx.moveTo(xCenter, yCenter);
+        for (let i = 0; i < 320; i++) {
+            let angle = i * Math.PI / 30;
+            let dist = radius * i / 300;
+            cx.lineTo(xCenter + Math.cos(angle) * dist,
+                    yCenter + Math.sin(angle) * dist);
+        }
+        cx.stroke();
+    }
 
+    function star(x, y) {
+        let cx = document.querySelector("canvas").getContext("2d");
+        let radius = 50, xCenter = x + radius, yCenter = y + radius;
+        cx.beginPath();
+        cx.moveTo(xCenter + radius, yCenter);
+        for (let i = 1; i <= 8; i++) {
+            let angle = i * Math.PI / 4;
+            cx.quadraticCurveTo(xCenter, yCenter,
+                                xCenter + Math.cos(angle) * radius,
+                                yCenter + Math.sin(angle) * radius);
+        }
+        cx.fillStyle = "gold";
+        cx.fill();
+    }
+    
+    
     // Дополнительные функции
 
     /**
@@ -143,7 +177,9 @@
     }
 
     // Выполнение функций
-    trapezoid(20, 150, 50, 120, 250);
-    diamond(45, 55);
-    zigzag(5, 5, 230, 15, 10);
+    //trapezoid(20, 150, 50, 120, 250);
+    //diamond(45, 55);
+    //zigzag(5, 5, 230, 15, 10);
+    //spiral(150, 120);
+    star(40, 20);
 </script>
