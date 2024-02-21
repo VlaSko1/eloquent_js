@@ -8,20 +8,41 @@
     ];
 
     let cx = document.querySelector("canvas").getContext("2d");
-    let total = results.reduce((sum, {count}) => sum + count, 0);
+    cx.font = "18px Times";
+    
+    /**
+     * Строит диаграмму по данным arData радиусом rad и координатами центра x и y
+     * @param {array} arData - массив объектов с данными сегмента диаграммы
+     * @param {number} x - целое число, координата по оси x центра диаграммы
+     * @param {number} y - целое число, координата по оси y центра диаграммы
+     * @param {number} rad - целое число, радиус диаграммы
+     * @return {undefined} - ничего не возвращает (просто строит диаграмму)
+     */
+    function createDiagram(arData, x, y, rad) {
+        let total = arData.reduce((sum, {count}) => sum + count, 0);
 
-    // Start at the top
-    let currentAngle = -0.5 * Math.PI;
-    for (let result of results) {
-        let sliceAngle = (result.count / total) * 2 * Math.PI;
-        cx.beginPath();
-        // center=100,100, radius=100
-        // from current angle, clockwise by slice's angle
-        cx.arc(100, 100, 100,
-            currentAngle, currentAngle + sliceAngle);
-        currentAngle += sliceAngle;
-        cx.lineTo(100, 100);
-        cx.fillStyle = result.color;
-        cx.fill();
+        // Start at the top
+        let currentAngle = -0.5 * Math.PI;
+        for (let result of arData) {
+            let sliceAngle = (result.count / total) * 2 * Math.PI;
+            cx.beginPath();
+            // center=100,100, radius=100
+            // from current angle, clockwise by slice's angle
+            cx.arc(x, y, rad,
+                currentAngle, currentAngle + sliceAngle);
+
+            textForDiargam(result, rad, currentAngle, currentAngle + sliceAngle);
+            currentAngle += sliceAngle;
+            cx.lineTo(x, y);
+            cx.fillStyle = result.color;
+            cx.fill();
+        }
     }
+
+    function textForDiargam(objData, rad, startAngle, endAngle) {
+        console.log(startAngle);
+        console.log(endAngle);
+        console.log("-----------------------------------");
+    }
+    createDiagram(results, 200, 200, 100);
 </script>
