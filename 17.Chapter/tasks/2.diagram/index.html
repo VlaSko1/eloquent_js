@@ -1,10 +1,10 @@
-<canvas width="500" height="700" ></canvas>
+<canvas width="600" height="700" ></canvas>
 <script>
     const results = [
-        {name: "Satisfied", count: 1043, color: "lightblue"},
+        {name: "Satisfied", count: 143, color: "lightblue"},
         {name: "Neutral", count: 563, color: "lightgreen"},
         {name: "Unsatisfied", count: 510, color: "pink"},
-        {name: "No comment", count: 175, color: "silver"}
+        {name: "No comment", count: 1175, color: "silver"}
     ];
 
     let cx = document.querySelector("canvas").getContext("2d");
@@ -31,18 +31,29 @@
             cx.arc(x, y, rad,
                 currentAngle, currentAngle + sliceAngle);
 
-            textForDiargam(result, rad, currentAngle, currentAngle + sliceAngle);
+            
+            // Чужой код 
+            // Находим середину дуги в радианах 
+            let middleAngle = currentAngle + 0.5 * sliceAngle;
+            // Находим катеты прямоугольного треугольника (это координаты по оси абсцисс и ординат)
+            let textX = Math.cos(middleAngle) * (rad + rad * 0.15) + x;
+            let textY = Math.sin(middleAngle) * (rad + rad * 0.15) + y;
+            cx.textBaseLine = "middle";
+            if (Math.cos(middleAngle) > 0) {
+                cx.textAlign = "left";
+            } else {
+                cx.textAlign = "right";
+            }
+
+            cx.fillStyle = result.color;
+            cx.fillText(result.name, textX, textY);
+
             currentAngle += sliceAngle;
             cx.lineTo(x, y);
-            cx.fillStyle = result.color;
+            
             cx.fill();
         }
     }
 
-    function textForDiargam(objData, rad, startAngle, endAngle) {
-        console.log(startAngle);
-        console.log(endAngle);
-        console.log("-----------------------------------");
-    }
-    createDiagram(results, 200, 200, 100);
+    createDiagram(results, 300, 200, 150);
 </script>
