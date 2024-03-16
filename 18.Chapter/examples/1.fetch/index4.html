@@ -1,0 +1,5 @@
+<script>
+    fetch('data.txt', {headers: {Range: "bytes=8-19"}})
+        .then(resp => resp.text())
+        .then(console.log);
+</script>

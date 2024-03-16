@@ -1,0 +1,19 @@
+<textarea></textarea>
+<script>
+    let textarea = document.querySelector("textarea");
+    textarea.addEventListener("keydown", event => {
+        // Код клавиши для F2, оказывается, 113
+        if (event.keyCode == 113) {
+            replaceSelection(textarea, "Хасехемуи");
+            event.preventDefault();
+        }
+    });
+    function replaceSelection(field, word) {
+        let from = field.selectionStart, to = field.selectionEnd;
+        field.value = field.value.slice(0, from) + word +
+                        field.value.slice(to);
+        // Поставить курсор после слова
+        field.selectionStart = from + word.length;
+        field.selectionEnd = from + word.length;
+    }
+</script>

@@ -1,0 +1,10 @@
+<label>
+    <input type="checkbox" id="purple">Сделать страницу розовой
+</label>
+<script>
+    let checkbox = document.querySelector("#purple");
+    checkbox.addEventListener("change", () => {
+        document.body.style.background = 
+            checkbox.checked ? "mediumpurple" : "";
+    });
+</script>
