@@ -1,0 +1,185 @@
+<canvas width="300" height="400" ></canvas>
+<script>
+
+    /**
+     * Рисует равнобедренную трапецию
+     * @param {number} x координата левого нижнего края трапеции по оси "X"
+     * @param {number} y координата левого нижнего края трапеции по оси "Y"
+     * @param {number} angle угол основания (нижнего) трапеции в градусах (целое число) 
+     * @param {number} height высота трапеции (целое число)
+     * @param {number} base длина большего основания трапеции 
+     * @return {undefined} ничего не возвращает, т. к. рисует трапецию заданных параметров на холсте
+     */
+    function trapezoid(x, y, angle, height, base) {
+
+        let cx = document.querySelector("canvas").getContext("2d");
+
+        // Проверка заданных параметров
+        if (y <= height) {
+            alert("Неверно заданы параметры трапеции, коородината Y нижнего левого края трапеции " + 
+                    "не должна быть меньше или равна высоте трапеции"
+            );
+            return;
+        }
+        if (angle <= 0 || angle >= 90) {
+            alert("Угол основания трапеции должен быть больше 0 но меньше 90 градусов.");
+            return;
+        }
+        if (!checkAngleHeight(angle, height, base)) {
+            alert("Заданы неверные параметры высоты трапеции, угла и длины нижнего основания трапеции");
+            return;
+        }
+
+        // Расчет точек для рисования трапеции
+        let y2 = y - height; 
+        // расчитываем по теореме синусов
+        let x2 = Math.sin((180 - angle - 90) * Math.PI / 180) * height / Math.sin(angle * Math.PI / 180);
+        x2 = Math.round(x2) + x;
+
+        let y3 = y2;
+        let x3 = x + base - (x2 - x);
+        let y4 = y;
+        let x4 = x + base;
+
+        cx.beginPath();
+        cx.moveTo(x, y);
+        cx.lineTo(x2, y2);
+        cx.lineTo(x3, y3);
+        cx.lineTo(x4, y4);
+        cx.lineTo(x, y);
+        cx.closePath();
+        cx.stroke();
+    }
+
+    /**
+     * Рисует квадрат (ромб) красного цвета повернутый на 45 градусов со смещением оси координат на x и y 
+     * соответственно по оси абсцисс и ординат (x и y)
+     * @param {number} x - целое число, величина смещения оси x относительно первоначального значения
+     * @param {number} y - целое число, величина смещения оси y относительно первоначального значения
+     * @return {undefined} - ничего не возвращает 
+     */
+    function diamond(x, y) {
+        let cx = document.querySelector("canvas").getContext("2d");
+        cx.translate(x, y);
+        cx.rotate(Math.PI / 4);
+        cx.fillStyle = "red";
+        cx.fillRect(0, 0, 60, 60);
+        cx.resetTransform(); // отменяет смещение
+    }
+
+    /**
+     * Рисует на хослте зигзагообразную фигуру 
+     * @param {number} x - координата x начала фигуры
+     * @param {number} y - координата y начала фигуры
+     * @param {number} length - длина отрезка зигзага
+     * @param {number} angle - целое число, угол между отрезками зигзага
+     * @param {number} count - число отрезков зигзага
+     * @return {undefined} - ничего не возвращает 
+     */
+    function zigzag(x, y, length, angle, count) {
+        // Проверки значений
+        if (!Number.isInteger(x) || x < 0) {
+            alert("Координата х должна быть целым числом и должна быть большей или равной нулю!");
+            return;
+        }
+        if (!Number.isInteger(y) || y < 0) {
+            alert("Координата y должна быть целым числом и должна быть большей или равной нулю!");
+            return;
+        }
+        if (!Number.isInteger(length) || length < 5) {
+            alert("Длина отрезка зигзага должна быть целым числом и должна быть больше 5!");
+            return;
+        }
+        if (!Number.isInteger(angle) || angle <= 1 || angle >= 90) {
+            alert("Угол между отрезками зигзага должен быть целым числом и должен быть больше 1 и меньше 90 градусов!");
+            return;
+        }
+        if (!Number.isInteger(count) || count < 1) {
+            alert("Количество отрезков зигзага должно быть целым числом и должно быть не меньше одного!");
+            return;
+        }
+
+        // Предварительные расчёты
+        // По теореме синусов расчитываем величину на которую каждый раз смещается координата y при построении 
+        // следующего отрезка зигзага
+        let offsetY = Math.round(length * Math.sin(0.5 * angle * Math.PI / 180) / Math.sin(Math.PI / 2)); 
+        let offsetX = Math.round(length * Math.sin((90 - angle / 2) * Math.PI / 180) / Math.sin(Math.PI / 2)); 
+
+        // Построение фигуры
+        let cx = document.querySelector("canvas").getContext("2d");
+
+        cx.beginPath();
+        cx.moveTo(x, y);
+        for (let i = 1; i <= count; i++) {
+            y += offsetY;
+            if (i % 2) {
+                x += offsetX;
+            } else {
+                x -= offsetX;                
+            }
+            cx.lineTo(x, y);
+        }
+        cx.stroke();
+    }
+
+    /**
+     * Строит спираль закручивающуюся по часовой стрелке (код взят из решения задачи в книге)
+     * @param {number} x - координата начала фигуры по оси X
+     * @param {number} y - координата начала фигуры по оси Y
+     * @return {undefined} ничего не возвращает
+     */ 
+    function spiral(x, y) {
+        let cx = document.querySelector("canvas").getContext("2d");
+        let radius = 50, xCenter = x + radius, yCenter = y + radius;
+        cx.beginPath();
+        cx.moveTo(xCenter, yCenter);
+        for (let i = 0; i < 320; i++) {
+            let angle = i * Math.PI / 30;
+            let dist = radius * i / 300;
+            cx.lineTo(xCenter + Math.cos(angle) * dist,
+                    yCenter + Math.sin(angle) * dist);
+        }
+        cx.stroke();
+    }
+
+    function star(x, y) {
+        let cx = document.querySelector("canvas").getContext("2d");
+        let radius = 50, xCenter = x + radius, yCenter = y + radius;
+        cx.beginPath();
+        cx.moveTo(xCenter + radius, yCenter);
+        for (let i = 1; i <= 8; i++) {
+            let angle = i * Math.PI / 4;
+            cx.quadraticCurveTo(xCenter, yCenter,
+                                xCenter + Math.cos(angle) * radius,
+                                yCenter + Math.sin(angle) * radius);
+        }
+        cx.fillStyle = "gold";
+        cx.fill();
+    }
+    
+    
+    // Дополнительные функции
+
+    /**
+     * Проверяет правильно ли заданы для трапеции следующие данные: угол нижнего основания трапеции, длинна 
+     * большего основания трапеции и высота трапеции
+     * @param {number} угол основания (нижнего) трапеции в градусах (целое число) 
+     * @param {number} height высота трапеции (целое число)
+     * @param {number} base длина большего основания трапеции
+     * @return {boolean} возвращает false, если данные трапеции заданы неправильно, в противном случае - true
+     */
+    function checkAngleHeight(angle, height, base) {
+        let lowCath = Math.sin((180 - angle - 90) * Math.PI / 180) * height / Math.sin(angle * Math.PI / 180);
+        if (base <= 2 * lowCath) {
+            return false;
+        }
+        return true;
+    }
+
+    // Выполнение функций
+    //trapezoid(20, 150, 50, 120, 250);
+    //diamond(45, 55);
+    //zigzag(5, 5, 230, 15, 10);
+    //spiral(150, 120);
+    star(40, 20);
+</script>

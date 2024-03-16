@@ -1,0 +1,19 @@
+<canvas></canvas>
+<script>
+    function flipHorizintally(context, around) {
+        context.translate(around, 0);
+        context.scale(-1, 1);
+        context.translate(-around, 0);
+    }
+
+    let cx = document.querySelector("canvas").getContext("2d");
+    let img = document.createElement('img');
+    img.src = "../../img/player.png";
+    let spriteW = 24, spriteH = 30;
+    img.addEventListener("load", () => {
+        flipHorizintally(cx, 100 + spriteW / 2);
+        cx.drawImage(   img, 0, 0, spriteW, spriteH,
+                        100, 0, spriteW, spriteH);                
+        
+    });
+</script>
