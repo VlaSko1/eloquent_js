@@ -1,0 +1,18 @@
+<label>
+    <input type="radio" name="color" value="orange">Оранжевый
+</label>
+<label>
+    <input type="radio" name="color" value="lightgreen">Зеленый
+</label>
+<label>
+    <input type="radio" name="color" value="lightblue">Синий
+</label>
+
+<script>
+    let buttons = document.querySelectorAll("[name=color]");
+    for (let button of Array.from(buttons)) {
+        button.addEventListener("change", () => {
+            document.body.style.background = button.value;
+        });
+    }
+</script>

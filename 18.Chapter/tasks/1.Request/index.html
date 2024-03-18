@@ -1,0 +1,45 @@
+<select>
+    <option>Text</option>
+    <option>Html</option>
+    <option>JSON</option>
+    <option>Rainbow</option>
+</select>
+<button>Получить данные из сайта</button>
+<br>
+<code id="page"></code>
+
+<script>
+    let select = document.querySelector("select");
+    let button = document.querySelector("button");
+    let page = document.querySelector("#page");
+    let url = "https://eloquentjavascript.net/author";
+    let state = 'Text';
+
+    const requests = {
+        Text: 'text/plain',
+        Html: 'text/html',
+        JSON: 'application/json',
+        Rainbow: 'application/rainbows+unicorns', 
+    }
+
+    select.addEventListener("change", () => {
+        for (let option of Array.from(select.options)) {
+            if (option.selected) {
+                state = option.value;
+            }
+        }
+    })
+
+    button.addEventListener('click', () => {
+        if (state) {
+            showTypes(requests[state]);
+        } else {
+            alert("Выберите тип запроса к серверу!")
+        }
+    });
+
+    async function showTypes(type) {
+        let resp = await fetch(url, {headers: {accept: type}});
+        page.textContent = `${type}: ${await resp.text()}\n`;
+    }
+</script>

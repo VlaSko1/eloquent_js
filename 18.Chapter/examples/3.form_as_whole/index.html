@@ -1,0 +1,12 @@
+<form action="#">
+    Значение: <input type="text" name="value">
+    <button type="submit">Сохранить</button>
+</form>
+
+<script>
+    let form = document.querySelector('form');
+    form.addEventListener("submit", event => {
+        console.log("Сохранение значения", form.elements.value.value);
+        event.preventDefault();
+    })
+</script>

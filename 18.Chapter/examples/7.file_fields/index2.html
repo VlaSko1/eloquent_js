@@ -1,0 +1,14 @@
+<input type="file" multiple>
+<script>
+    let input = document.querySelector("input");
+    input.addEventListener("change", () => {
+        for (let file of Array.from(input.files)) {
+            let reader = new FileReader();
+            reader.addEventListener('load', () => {
+                console.log("Файл", file.name, "начинается с", 
+                    reader.result.slice(0, 20));
+            });
+            reader.readAsText(file);
+        }
+    });
+</script>
