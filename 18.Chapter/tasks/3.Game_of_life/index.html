@@ -1,0 +1,139 @@
+<!doctype html>
+
+<div id="grid"></div>
+<button id="next">Next generation</button>
+
+<script>
+  // число ячеек должно быть таким, что бы получался квадрат  
+  const countСell = 64;
+  let sideGrid = Math.sqrt(countСell);
+  let stateCell = [];
+  let grid = document.querySelector("#grid");
+  let buttonGenerate = document.querySelector("#next");
+
+  window.onload = () => {
+    getRandomState();
+    buildGrid(stateCell);
+  };
+
+  grid.addEventListener('click', (e) => {
+    if (e.target.type === 'checkbox') {
+      console.log(e.target.checked);
+      let [, i, j] = e.target.id.split("_");
+      stateCell[i][j] = e.target.checked ? 1 : 0; 
+    }
+  });
+
+  buttonGenerate.addEventListener('click', () => {
+    stateCell = calculateGenerate(stateCell);
+    grid.innerHTML = null;
+    buildGrid(stateCell);
+  });
+
+  
+  /**
+   * Создает случайное наполнение клеток для игры  
+   */
+  function getRandomState() {
+    for (let i = 0; i < sideGrid; i++) {
+      arTemp = [];
+      for (let j = 0; j < sideGrid; j++) {
+        arTemp.push(getRandomValue());
+      }
+      stateCell.push(arTemp);
+    }
+  }
+
+  /** 
+   * Генерирует 0 или 1 для заполнения клеток (1 - заполнена, 0 - нет)
+   * 
+   */ 
+  function getRandomValue() {
+    return Math.random() > 0.5 ? 1 : 0; 
+  }
+
+  /**
+   * Строит таблицу клеток на основе полученного стейта
+   */ 
+  function buildGrid(dataState) {
+    for (let h = 0; h < dataState.length; h++) {
+      for (let k = 0; k < dataState[0].length; k++) {
+        let elemCheckbox = document.createElement("input");
+        elemCheckbox.setAttribute('type', 'checkbox');
+        elemCheckbox.setAttribute('id', `id_${h}_${k}`);
+        if (dataState[h][k]) {
+          elemCheckbox.setAttribute('checked', 'checked');
+        }
+        grid.appendChild(elemCheckbox);
+      }
+      grid.appendChild(document.createElement("br"));
+    }
+  }
+
+  function calculateGenerate(state) {
+    let newState = [];
+    for (let i = 0; i < state.length; i++) {
+      let arrStr = [];
+      for (let j = 0; j < state[0].length; j++) {
+        if (state[i][j]) {
+
+          let countCheckCell = getCountCheck(state, i, j);
+
+          if (countCheckCell < 2 || countCheckCell > 3) {
+            arrStr.push(0);
+          } else arrStr.push(1);
+        } else {
+
+          let countCheckCell = getCountCheck(state, i, j);
+
+          if (countCheckCell === 3) {
+            arrStr.push(1);
+          } else arrStr.push(0);
+        }
+      }
+      newState.push(arrStr);
+    }
+    return newState;
+  }
+
+  function getCountCheck(state, i, j) {
+    let countCheckCell = 0;
+    if (i > 0 && i < state.length - 1 && j > 0 && j < state[0].length - 1) {
+      countCheckCell =  state[i][j-1] + 
+                        state[i-1][j-1] + state[i-1][j] + state[i-1][j+1] +
+                        state[i][j+1] +
+                        state[i+1][j+1] + state[i+1][j] + state[i+1][j-1];
+
+    } else if (i == 0 && j > 0 && j < state[0].length - 1) {
+      countCheckCell =  state[i][j-1] + 
+                        state[i][j+1] +
+                        state[i+1][j+1] + state[i+1][j] + state[i+1][j-1];
+    } else if (i == state.length - 1 && j > 0 && j < state[0].length - 1) {
+      countCheckCell =  state[i][j-1] + 
+                        state[i-1][j-1] + state[i-1][j] + state[i-1][j+1] +
+                        state[i][j+1];
+    } else if (i > 0 && i < state.length - 1 && j == 0) {
+      countCheckCell =  state[i-1][j] + state[i-1][j+1] +
+                        state[i][j+1] +
+                        state[i+1][j+1] + state[i+1][j];
+    } else if (i > 0 && i < state.length - 1 && j == state[0].length - 1 ) {
+      countCheckCell =  state[i][j-1] + 
+                        state[i-1][j-1] + state[i-1][j] +
+                        state[i+1][j] + state[i+1][j-1];
+    } else if (i == 0 && j == 0) {
+      countCheckCell =  state[i][j+1] +
+                        state[i+1][j+1] + state[i+1][j];
+    } else if (i == 0 && j == state[0].length - 1) {
+      countCheckCell =  state[i][j-1] + 
+                        state[i+1][j] + state[i+1][j-1];
+    } else if (i == state.length - 1 && j == state[0].length - 1) {
+      countCheckCell =  state[i][j-1] + 
+                        state[i-1][j-1] + state[i-1][j];
+    } else if (i == state.length - 1 && j == 0) {
+      countCheckCell =  state[i-1][j] + state[i-1][j+1] +
+                        state[i][j+1];
+    }
+    return countCheckCell;
+  }
+
+</script>
