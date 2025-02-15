@@ -90,57 +90,32 @@ class PixelEditor {
       "div",
       {
         tabIndex: 0,
+        onkeydown: event => this.keyDown(event, config),
       },
       this.canvas.dom,
       elt("br"),
       ...this.controls.reduce((a, c) => a.concat(" ", c.dom), [])
     );
+  }
 
-    this.shortcutTools(tools);
-    this.undoCtrlZ();
+  keyDown(event, config) {
+    if (event.key == "z" && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      config.dispatch({ undo: true });
+    } else if (!event.ctrlKey && !event.metaKey && !event.altKey) {
+      for (let tool of Object.keys(config.tools)) {
+        if (tool[0] == event.key) {
+          event.preventDefault();
+          config.dispatch({ tool });
+          return;
+        }
+      }
+    }
   }
   syncState(state) {
     this.state = state;
     this.canvas.syncState(state.picture);
     for (let ctrl of this.controls) ctrl.syncState(state);
-  }
-
-  // Возвращает объект Map ключами которого являются первые строчные буквы из названия инструментов,
-  // а значениями - сами названия инструментов
-  getKeyToolsMap(tools) {
-    let arrTools = Object.keys(tools);
-    const mapTools = new Map();
-    for (let i = 0; i < arrTools.length; i++) {
-      mapTools.set(arrTools[i][0].toLocaleLowerCase(), arrTools[i]);
-    }
-    return mapTools;
-  }
-
-  // Навешивает события по изменению инструмента рисования при нажатии соответствующих клавиш 
-  // по первой строчной букве инструмента (только в английской раскладке).
-  shortcutTools(tools) {
-    const mapTools = this.getKeyToolsMap(tools);
-    for (let [key, value] of mapTools) {
-      document.addEventListener("keydown", (e) => {
-        if (e.key === key) {
-          e.preventDefault();
-          this.state.tool = value;
-          this.syncState(this.state);
-        }
-      });
-    }
-  }
-
-  // Навешивает событие отмены посоледней операции на сочетание клавиш Ctrl + z (большая или малая)
-  undoCtrlZ() {
-    document.addEventListener("keydown", (e) => {
-      if (e.key === 'z') {
-        e.preventDefault();
-        if (e.getModifierState("Control")) {
-          document.getElementById("undo").click();
-        } 
-      }
-    });
   }
 }
 
