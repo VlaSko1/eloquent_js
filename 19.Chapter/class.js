@@ -32,8 +32,16 @@ class PictureCanvas {
   }
   syncState(picture) {
     if (this.picture == picture) return;
+    let oldPicture = null;
+    if (this.picture) {
+      oldPicture = new Picture(
+        this.picture.width,
+        this.picture.height,
+        this.picture.pixels
+      );
+    } 
     this.picture = picture;
-    drawPicture(this.picture, this.dom, scale);
+    drawPicture(this.picture, this.dom, scale, oldPicture);
   }
 }
 
