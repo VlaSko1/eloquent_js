@@ -30,20 +30,12 @@ class PictureCanvas {
     });
     this.syncState(picture);
   }
-  syncState(picture) {
-    if (this.picture == picture) return;
-    let oldPicture = null;
-    if (this.picture) {
-      oldPicture = new Picture(
-        this.picture.width,
-        this.picture.height,
-        this.picture.pixels
-      );
-    } 
-    this.picture = picture;
-    drawPicture(this.picture, this.dom, scale, oldPicture);
-  }
 }
+  PictureCanvas.prototype.syncState = function (picture) {
+    if (this.picture == picture) return;
+    drawPicture(picture, this.dom, scale, this.picture);
+    this.picture = picture;
+  };
 
 PictureCanvas.prototype.mouse = function (downEvent, onDown) {
   if (downEvent.button != 0) return;
