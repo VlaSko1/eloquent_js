@@ -8,7 +8,7 @@ const startState = {
   doneAt: 0,
 };
 
-const baseTools = { draw, fill, rectangle, pick };
+const baseTools = { draw, fill, rectangle, pick, circle, };
 
 const baseControls = [
   ToolSelect,

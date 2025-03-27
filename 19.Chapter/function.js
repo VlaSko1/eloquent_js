@@ -71,6 +71,84 @@ function rectangle(start, state, dispatch) {
   return drawRectangle;
 }
 
+function circle(start, state, dispatch) {
+  function drawCircle(pos) {
+    // находим координаты противоположной точки окружности от точки растягивания
+    let [xStart, xCenter, xEnd, yStart, yCenter, yEnd] = getCircleData(
+      start.x,
+      start.y,
+      pos.x,
+      pos.y
+    );
+    let drawn = [];
+    let radius = distBetPoints(xStart, xCenter, yStart, yCenter);
+    // ширина и высота полотна для рисования
+     let realWidth = state.picture.width;
+     let realHeight = state.picture.height;
+    // Находим координаты квадрата в который будет вписываться наш круг
+    let xStartSquare = xCenter - radius;
+    let xEndSquare = xCenter + radius;
+    let yStartSquare = yCenter - radius;
+    let yEndSquare = yCenter + radius;
+    // Делаем проверку длины радиуса круга, что бы круг не выходил за холст
+    radius = Math.min(
+      radius,
+      distBetPoints(0, xCenter, yCenter, yCenter),
+      distBetPoints(xCenter, realWidth, yCenter, yCenter),
+      distBetPoints(xCenter, xCenter, 0, yCenter),
+      distBetPoints(xCenter, xCenter, yCenter, realHeight)
+    );
+   
+    for (let y = yStartSquare; y <= yEndSquare; y++) {
+      for (let x = xStartSquare; x <= xEndSquare; x++) {
+        if (distBetPoints(x, xCenter, y, yCenter) <= radius) {
+          drawn.push({ x, y, color: state.color });
+        }
+      }
+    }
+    dispatch({ picture: state.picture.draw(drawn) });
+  }
+  function getCircleData(startX, startY, posX, posY) {
+    const resultDataArr = [];
+    if (startX >= posX) {
+      resultDataArr.push(posX);
+      resultDataArr.push(startX);
+      resultDataArr.push(getOpp(startX, posX));
+    } else {
+      resultDataArr.push(getOpp(startX, posX));
+      resultDataArr.push(startX);
+      resultDataArr.push(posX);
+    }
+    if (startY >= posY) {
+      resultDataArr.push(posY);
+      resultDataArr.push(startY);
+      resultDataArr.push(getOpp(startY, posY));
+    } else {
+      resultDataArr.push(getOpp(startY, posY));
+      resultDataArr.push(startY);
+      resultDataArr.push(posY);
+    }
+    return resultDataArr;
+  }
+  /**
+   * Получает координату противоположной точки указателя мыши
+   * @param {number} start - координата цента круга (неважно x или y)
+   * @param {number} pos - координата указалетеля мыши
+   * @returns {number} - координата точки противоположной точки с указателем мыши
+   */
+  function getOpp(start, pos) {
+    return Math.floor(2 * start - pos);
+  }
+
+  function distBetPoints(xStart, xEnd, yStart, yEnd) {
+    return Math.floor(
+      Math.sqrt(Math.pow(xEnd - xStart, 2) + Math.pow(yEnd - yStart, 2))
+    );
+  }
+  drawCircle(start);
+  return drawCircle;
+}
+
 const around = [
   { dx: -1, dy: 0 },
   { dx: 1, dy: 0 },
